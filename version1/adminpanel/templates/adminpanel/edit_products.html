@@ -1,0 +1,249 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block Home %}
+
+<div class="container-fluid pt-4 px-4">
+
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h4 class="fw-bold mb-1">Add New Product</h4>
+        <p class="text-muted">Add a new product to your store</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-4">
+
+            <!-- LEFT COLUMN -->
+            <div class="col-lg-7">
+
+                <!-- Name & Description -->
+                <div class="card p-4 shadow-sm mb-4">
+                    <h6 class="fw-semibold mb-3">Name and Description</h6>
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="form-label">Product Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="text-danger small">{{ form.description.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="card p-4 shadow-sm mb-4">
+                    <h6 class="fw-semibold mb-3">Category</h6>
+
+                    <label class="form-label">Product Category</label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <div class="text-danger small">{{ form.category.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Stock -->
+                <div class="card p-4 shadow-sm">
+                    <h6 class="fw-semibold mb-3">Manage Stock</h6>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Stock Status</label>
+                            {{ form.stock }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Stock Quantity</label>
+                            {{ form.stock_value }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-lg-5">
+
+                <!-- Pricing -->
+                <div class="card p-4 shadow-sm mb-4">
+                    <h6 class="fw-semibold mb-3">Product Pricing</h6>
+
+                    <label class="form-label">Price</label>
+                    {{ form.price }}
+                    {% if form.price.errors %}
+                        <div class="text-danger small">{{ form.price.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Status -->
+                <div class="card p-4 shadow-sm mb-4">
+                    <h6 class="fw-semibold mb-3">Product Status</h6>
+
+                    <select name="status" class="form-control">
+                        {% for value, label in form.status.field.choices %}
+                            <option value="{{ value }}"
+                                {% if form.status.value == value %}selected{% endif %}>
+                                {% if value == 'Active' %}🟢 Active{% else %}🔴 Blocked{% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    {% if form.status.errors %}
+                        <div class="text-danger small">{{ form.status.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Image Upload -->
+                <div class="card p-4 shadow-sm">
+                    <h6 class="fw-semibold mb-3">Product Image</h6>
+
+                    <div class="border border-dashed rounded p-4 text-center">
+                        <input type="file"
+                        name="product_image"
+                        class="form-control"
+                        accept="image/*">
+
+                        {% if form.product_image.errors %}
+                            <div class="text-danger small mt-2">
+                                {{ form.product_image.errors.0 }}
+                            </div>
+                        {% endif %}
+                        <p class="text-muted small mt-2">Click to upload product image</p>
+       
+                        <input type="hidden" name="cropped_image_data" id="cropped_image_data">
+
+                        <!-- Crop Preview -->
+                        <div class="mt-3">
+                            <img id="cropper-preview" style="max-width:100%; display:none;">
+                            <button type="button"
+                                    id="crop-save-btn"
+                                    class="btn btn-sm btn-primary mt-2"
+                                    style="display:none;">
+                                Crop & Use Image
+                            </button>
+                        </div>       
+                        {% if form.product_image.help_text %}
+                            <div class="mt-2" id="product-image-help">
+                                {{ form.product_image.help_text|safe }}
+                            </div>
+                        {% endif %}                                                          
+                    </div>
+
+
+
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="{% url 'sproducts' %}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success px-4">
+                        Update
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let cropper;
+
+        // Django will render the file input for product_image.
+        // We select it by name to avoid id differences.
+        const fileInput   = document.querySelector('input[name="product_image"]');
+        const imgPreview  = document.getElementById("cropper-preview");
+        const cropBtn     = document.getElementById("crop-save-btn");
+        const hiddenInput = document.getElementById("cropped_image_data");
+        const helpText = document.getElementById("product-image-help");
+
+        if (!fileInput) return;
+
+        fileInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (helpText) {
+                helpText.style.display = "none";
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                imgPreview.src = event.target.result;
+                imgPreview.style.display = "block";
+
+                // Destroy old cropper if exists
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(imgPreview, {
+                    aspectRatio: 1,      // Change if you want a different aspect ratio
+                    viewMode: 1,
+                    movable: true,
+                    zoomable: true,
+                    rotatable: false,
+                    scalable: false,
+                });
+
+                cropBtn.style.display = "inline-block";
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        cropBtn.addEventListener("click", function () {
+            if (!cropper) return;
+
+            const canvas = cropper.getCroppedCanvas({
+                width: 800,   // output width
+                height: 800,  // output height
+            });
+
+            const base64data = canvas.toDataURL("image/png");
+
+            hiddenInput.value = base64data;
+            imgPreview.src = base64data;
+
+            //alert("Cropped image set. Now click Save to update the product.");
+            cropBtn.innerText = "✔ Image Saved";
+            cropBtn.classList.remove("btn-primary");
+            cropBtn.classList.add("btn-success");
+            cropBtn.disabled = true;
+
+            /* Optional cleanup */
+            cropper.destroy();
+            cropper = null;
+        });
+    });
+
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+      
+</script>
+
+
+{% endblock Home %}
+

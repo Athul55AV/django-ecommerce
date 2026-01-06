@@ -1,0 +1,101 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="{% static 'userpanel/images/WWicon.png' %}">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap4" />
+
+	<title>WoodWrights{% block title %}|privacypolicy{% endblock title %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6;
+        }
+        ul {
+            margin-left: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    {% block Home %}
+    <div class="container">
+        <h1>Terms and Conditions</h1>
+        <p><strong>Effective Date:</strong> September 22, 2025</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using our website and services, you agree to be bound by these Terms and Conditions. If you do not agree, please do not use our site.</p>
+
+        <h2>2. Use of Website</h2>
+        <p>You agree to use this website only for lawful purposes and in a way that does not infringe on the rights of others or restrict their use of the site.</p>
+
+        <h2>3. Product Information</h2>
+        <p>We strive to provide accurate product descriptions and pricing, but errors may occur. We reserve the right to correct any inaccuracies or cancel orders due to pricing or availability issues.</p>
+
+        <h2>4. Orders & Payments</h2>
+        <ul>
+            <li>All orders are subject to acceptance and availability.</li>
+            <li>We reserve the right to cancel or refuse any order.</li>
+            <li>Prices are in Rupees and may change without notice.</li>
+        </ul>
+
+        <h2>5. Shipping & Delivery</h2>
+        <p>Delivery timelines are estimates and may vary due to external factors. We are not responsible for delays caused by shipping carriers or unforeseen circumstances.</p>
+
+        <h2>6. Returns & Refunds</h2>
+        <p>We offer a return window of 30 days from the date of delivery. Returned items must be in original condition. See our <a href="{% url 'privacypolicy' %}">Return Policy</a> for full details.</p>
+
+        <h2>7. Intellectual Property</h2>
+        <p>All content on this site, including text, images, and design, is the property of WoodWrights and protected by copyright laws. You may not copy, reproduce, or distribute without permission.</p>
+
+        <h2>8. Limitation of Liability</h2>
+        <p>We are not liable for any indirect, incidental, or consequential damages arising from the use of our website or products.</p>
+
+        <h2>9. Governing Law</h2>
+        <p>These Terms shall be governed by the laws of India. Any disputes will be resolved in the courts of Kerala.</p>
+
+        <h2>10. Changes to Terms</h2>
+        <p>We reserve the right to update these Terms at any time. Any changes will be posted on this page with an updated effective date.</p>
+
+        <h2>11. Contact Us</h2>
+        <p>If you have any questions about these Terms and Conditions, feel free to contact us:</p>
+        <p>
+            📧 <strong>Email:</strong> support@WoodWrights.com<br>
+            📞 <strong>Phone:</strong> +91-999 999 9999<br>
+            📍 <strong>Address:</strong> WoodWrights Street, Kozhikode
+        </p>
+    </div>
+    {% endblock Home %}
+</body>
+<script>
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+</script>
+</html>

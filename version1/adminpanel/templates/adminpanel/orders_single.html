@@ -1,0 +1,90 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}            
+{% block Home %}    
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-Auto bg-light rounded mx-0">
+        <div class="text-center">
+            <div class="col-12">
+                <div class="bg-light rounded p-4">
+                    <h6 class="mb-4">Orders</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>order_id</th>
+                                    <th>customer</th>
+                                    <th>Address</th>
+                                    <th>product</th>
+                                    <th>quantity</th>
+                                    <th>ordered_date</th>
+                                    <th>payment status</th>
+                                    <th>order status</th>
+                                    <th>Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>   
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                    <form method="GET" class="d-flex" style="gap: 10px;">
+                                        <input type="text" name="search" class="form-control" placeholder="Search products/customer"
+                                            value="{{ request.GET.search }}">
+
+                                        <select name="status" class="form-select">
+                                        <option value="">All</option>
+                                        <option value="Accepted" {% if request.GET.stock == "Accepted" %}selected{% endif %}>Accepted</option>
+                                        <option value="Packed" {% if request.GET.stock == "Packed" %}selected{% endif %}>Packed</option>
+                                        <option value="On The Way" {% if request.GET.stock == "On The Way" %}selected{% endif %}>On The Way</option>
+                                        <option value="Delivered" {% if request.GET.stock == "Delivered" %}selected{% endif %}>Delivered</option>
+                                        <option value="Cancel" {% if request.GET.stock == "Cancel" %}selected{% endif %}>Cancel</option>
+                                        <option value="Pending" {% if request.GET.stock == "Pending" %}selected{% endif %}>Pending</option>
+                                        <option value="Return" {% if request.GET.stock == "Return" %}selected{% endif %}>Return</option>
+                                        </select>                                        
+
+
+                                        <select name="sort" class="form-select">
+                                        <option value="">Sort by</option>
+                                        <option value="-ordered_date" {% if request.GET.sort == "-ordered_date" %}selected{% endif %}>Newer to Older</option>
+                                        <option value="ordered_date" {% if request.GET.sort == "ordered_date" %}selected{% endif %}>Older to Newer</option>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                    </form>
+                                </div>                                                             
+                                {% for order in orders %}
+                                <tr>
+                                    <td><a href="{% url 'sorderdetail' order.id %}">{{order.payment.razorpay_order_id}}</a></td>
+                                    <td>{{order.user}}</td>
+                                    <td>{{order.name}} {{order.locality}},{{order.city}},pin:{{order.zipcode}},{{order.state}} ,Phone:{{order.mobile}}</td>
+                                    <td><img src="{{order.product.product_image.url}}" alt="Image" class="img-fluid">
+                                        {{order.product}}</td>
+                                    <td>{{order.quantity}}</td>
+                                    <td>{{order.ordered_date}}</td>
+                                    <td>
+                                        {% if order.payment.paid %}
+                                            Paid
+                                        {% else %}
+                                            Not Paid
+                                        {% endif %}
+                                    </td>
+                                    <td>{{order.status}}</td>                              
+                                    <td>
+                                        <a href="{% url 'edit_orders' order.id %}">Edit</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+</script>
+
+{% endblock Home %}

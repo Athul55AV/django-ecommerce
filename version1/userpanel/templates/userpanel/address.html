@@ -1,0 +1,143 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block title %}|Address{% endblock title %}
+{% block Home %}
+
+
+    <div class="profile-section">
+        <div class="container profile-container">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="profile-sidebar">
+                        <ul class="nav flex-column nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'userprofile' %}">
+                                    <i class="bi bi-person-circle me-2"></i>Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'address' %}">
+                                    <i class="bi bi-geo-alt me-2"></i>Address
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'passwordchange' %}">
+                                    <i class="bi bi-lock me-2"></i>Change Password
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Address Cards -->
+                <div class="col-md-9">
+                    <div class="address-cards-container">
+                        <div class="address-header">
+                            <h3>Your Addresses</h3>
+                            <p>Manage your saved delivery addresses</p>
+                        </div>
+
+                        {% if messages %}
+                            {% for msg in messages %}
+                                <div class="alert-custom alert-{{msg.tags}}" role="alert">
+                                    {{msg}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="row gx-3">
+                            {% if add %}
+                                {% for ad in add %}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="address-card">
+                                            <div class="address-card-header">
+                                                Address {{ forloop.counter }}
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">Name:</span>
+                                                <span class="address-detail-value">{{ ad.name }}</span>
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">Locality:</span>
+                                                <span class="address-detail-value">{{ ad.locality }}</span>
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">Mobile:</span>
+                                                <span class="address-detail-value">{{ ad.mobile }}</span>
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">City:</span>
+                                                <span class="address-detail-value">{{ ad.city }}</span>
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">State:</span>
+                                                <span class="address-detail-value">{{ ad.state }}</span>
+                                            </div>
+                                            
+                                            <div class="address-detail">
+                                                <span class="address-detail-label">Zipcode:</span>
+                                                <span class="address-detail-value">{{ ad.zipcode }}</span>
+                                            </div>
+
+                                            <div class="address-actions">
+                                                <a href="{% url 'updateAddress' pk=ad.id %}" class="btn-update">
+                                                    <i class="bi bi-pencil-square me-1"></i>
+                                                </a>
+                                                <form action="{% url 'deleteAddress' pk=ad.id %}" method="POST" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this address?')">
+                                                        <i class="bi bi-trash me-1"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="address-card add-address-card">
+
+                                        <div class="add-address-body d-flex flex-column justify-content-center align-items-center h-100">
+                                            
+                                            <a href="{% url 'profile' %}" class="btn-plus">
+                                                <i class="bi bi-plus-lg"></i>
+                                            </a>
+
+                                            <p class="text-muted mt-3 mb-0">
+                                                Add a new delivery address
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+   
+                            {% else %}
+                                <div class="col-12">
+                                    <div class="empty-state">
+                                        <i class="bi bi-geo-alt"></i>
+                                        <h4>No Addresses Found</h4>
+                                        <p>You haven't added any delivery addresses yet.</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to index page when user presses browser back button
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", function () {
+            window.location.href = "{% url 'index' %}";
+        });
+    </script>
+{% endblock Home %}

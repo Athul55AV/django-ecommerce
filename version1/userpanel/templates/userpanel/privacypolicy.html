@@ -1,0 +1,98 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="{% static 'userpanel/images/WWicon.png' %}">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap4" />
+
+	<title>WoodWrights{% block title %}|privacypolicy{% endblock title %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6;
+        }
+        ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% block Home %}
+    <div class="container">
+        <h1>Public Policy</h1>
+        <p><strong>Effective Date:</strong> September 22, 2025</p>
+
+        <h2>1. Use of Website</h2>
+        <p>This website is intended for personal, non-commercial use. You agree not to misuse or interfere with its functionality. We reserve the right to restrict access, modify content, or terminate services at any time without notice.</p>
+
+        <h2>2. Information Collection</h2>
+        <p>We collect basic information such as your name, email, address, and order details when you interact with our website. We also use cookies to improve your experience.</p>
+
+        <h2>3. Use of Your Data</h2>
+        <ul>
+            <li>To fulfill and deliver your orders</li>
+            <li>To communicate offers and updates</li>
+            <li>To improve our products and services</li>
+        </ul>
+        <p>We never sell or rent your personal information to third parties.</p>
+
+        <h2>4. Data Security</h2>
+        <p>We use industry-standard security measures to protect your data. However, no digital system is completely secure.</p>
+
+        <h2>5. User Rights</h2>
+        <ul>
+            <li>You may request access, correction, or deletion of your data</li>
+            <li>You may opt out of marketing emails at any time</li>
+        </ul>
+
+        <h2>6. Third-Party Links</h2>
+        <p>Our website may contain links to other sites. We are not responsible for their privacy policies or content.</p>
+
+        <h2>7. Children’s Privacy</h2>
+        <p>We do not knowingly collect data from children under 13 years of age.</p>
+
+        <h2>8. Changes to This Policy</h2>
+        <p>This policy may be updated at any time. Changes will be posted on this page with a new effective date.</p>
+
+        <h2>9. Contact Us</h2>
+        <p>If you have questions about this policy, contact us:</p>
+        <p>
+            📧 <strong>Email:</strong> support@WoodWrights.com<br>
+            📞 <strong>Phone:</strong> +91-999 999 9999<br>
+            📍 <strong>Address:</strong> WoodWrights Street, Kozhikode
+        </p>
+    </div>
+    {% endblock Home %}
+</body>
+<script>
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+</script>
+</html>

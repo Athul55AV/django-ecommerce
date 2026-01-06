@@ -1,0 +1,237 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block Home %}
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">₹{{ today_revenue }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0">₹{{ total_revenue }}</h6>
+                </div>
+            </div>
+        </div>
+        {% comment %} <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+
+<!-- Sales Chart Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Monthly Sales</h5>
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Yearly Sales</h5>
+                    <canvas id="yearlySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sales Chart End -->
+
+
+<!-- Recent Sales Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Pending Orders</h6>
+            <a href="{% url 'sorders' %}?status=Pending">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        {% comment %} <th scope="col"><input class="form-check-input" type="checkbox"></th> {% endcomment %}
+                        <th scope="col">order_id</th>
+                        <th scope="col">user name</th>
+                        <th scope="col">customer Address</th>
+                        <th scope="col">product</th>
+                        <th scope="col">ordered_date</th>
+                        <th scope="col">payment status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in pending_orders %}
+                        <tr>
+                            {% comment %} <td><input class="form-check-input" type="checkbox"></td> {% endcomment %}
+                            <td>{{order.payment.razorpay_order_id}}</td>
+                            <td>{{order.user}}</td>
+                            <td>{{order.name}} {{order.locality}}</td>
+                            <td>{{order.product}}</td>
+                            <td>{{order.ordered_date}}</td>
+                            <td>
+                                {% if order.payment.paid %}
+                                    Paid
+                                {% else %}
+                                    COD
+                                {% endif %} 
+                            </td>
+                            <td><a class="btn btn-sm btn-primary" href="{% url 'sorderdetail' order.id %}">Detail</a></td>
+                        </tr>
+                            {% empty %}
+                        <tr>
+                            <td colspan="6">No pending orders.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Recent Sales End -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Return Orders</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">user name</th>
+                            <th scope="col">order_id</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for op in return_orders %}
+                            <tr>
+                                <td>{{ op.product }}</td>
+                                <td>{{ op.user }}</td>
+                                <td>{{ op.payment.razorpay_order_id }}</td>
+                                <td><a class="btn btn-sm btn-primary" href="{% url 'sorderdetail' op.id %}">Detail</a></td>
+                            </tr>
+                                {% empty %}
+                            <tr>   
+                                <td colspan="6">No Return orders.</td>
+                            </tr>
+                        {% endfor %}                   
+                    </tbody>
+                </table>
+                <a href="{% url 'sorders' %}?status=Return">Show All</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">OutofStock Products</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in outofstock_products %}
+                            <tr>
+                                <td>{{ product.title }}</td>
+                                <td>{{ product.category.category_choice }}</td>
+                                <td>₹{{ product.price }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">No Outofstock products.</td>
+                            </tr>  
+                        {% endfor %}  
+                    </tbody>
+                </table>
+                <a href="{% url 'sproducts' %}?stock=OutofStock">Show All</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Widgets Start -->
+
+<!-- Widgets End -->
+
+<script>
+    const ctx = document.getElementById('monthlySalesChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Sales (₹)',
+                data: {{ chart_data|safe }},
+                backgroundColor: 'rgba(25, 135, 84, 0.6)',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    const yearlyCtx = document.getElementById('yearlySalesChart');
+
+    new Chart(yearlyCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ yearly_labels|safe }},
+            datasets: [{
+                label: 'Yearly Sales (₹)',
+                data: {{ yearly_data|safe }},
+                backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+
+</script>
+{% endblock Home %}

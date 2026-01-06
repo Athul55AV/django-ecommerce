@@ -1,0 +1,33 @@
+from django.urls import path
+from adminpanel.views import *
+
+urlpatterns = [
+    path('index/',index,name='sindex'),
+    path('base/',base,name='sbase'),
+    path('registration/',registration,name='sregistration'),
+    path('login/',login_view,name='slogin_view'),
+    path('logout/',logout_view,name='slogout_view'),
+    path('accounts/',accounts,name='saccounts'),
+    path('editusers/<int:user_id>',edit_users,name ='edit_users'),
+    path('deleteusers/<int:user_id>',delete_users,name ='delete_users'),
+    path('reset_password/<int:user_id>',reset_password,name ='reset_password'),
+    path('products/',products,name='sproducts'),
+    path('editproducts/<int:product_id>',edit_products,name ='edit_products'),
+    path('deleteproducts/<int:product_id>',delete_products,name ='delete_products'),    
+    path('product_review/',product_review,name ='product_review'),
+    path('single_review/<int:product_id>',single_review,name ='single_review'),
+    path('categories/',categories,name='scategories'),
+    path('editcategories/<int:categories_id>',edit_categories,name ='edit_categories'),
+    path('deletecategories/<int:categories_id>',delete_categories,name ='delete_categories'),   
+    path('code/',code,name='scode'),
+    path('editcode/<int:code_id>',edit_code,name ='edit_code'),
+    path('deletecode/<int:code_id>',delete_code,name ='delete_code'),     
+    path('orders/',orders,name='sorders'),
+    path("orders/<int:pk>/",order_detail, name="sorderdetail"),
+    path('editorders/<int:order_id>',edit_orders,name ='edit_orders'),
+    path('search/',search,name='ssearch'),
+    path('orders_single/<int:user_id>',orders_single,name='sorders_single'),
+    path('subscription/',subscription,name='ssubscription'),
+    path('contact_msg/',Contact_MSG,name='scontact_msg'),
+    path('address_view/<int:user_id>',address_view,name ='address_view'),
+]

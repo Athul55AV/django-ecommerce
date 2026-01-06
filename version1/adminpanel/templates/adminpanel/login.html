@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgb(137, 165, 154), rgb(255, 255, 255));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-wrapper {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgb(137, 165, 154));
+            width: 90%;
+            max-width: 1100px;
+            border-radius: 12px;
+            display: flex;
+            padding: 40px;
+        }
+
+        .login-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration {
+            width: 260px;
+            height: 260px;
+            background: #f2f2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration img {
+            width: 150px;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 40px 30px;
+        }
+
+        .login-right h2 {
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .input-group {
+            background: #ededed;
+            border-radius: 30px;
+            padding: 14px 20px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .input-group i {
+            margin-right: 10px;
+            color: #777;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            background: #6dbc45;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #5ea83a;
+        }
+
+        .forgot {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .forgot a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .create-account {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        .create-account a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 900px) {
+            .login-wrapper {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .login-right {
+                padding: 30px 0;
+            }
+
+            .create-account {
+                text-align: center;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="login-left">
+        <div class="illustration">
+            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="login-right">
+        <h1>WoodWrights</h1><h3>Member Login</h3>
+
+        <!-- Django compatible -->
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div class="input-group">
+                <i>👤</i>
+                {{ form.username }}
+            </div>
+            {% if form.username.errors %}
+                <small style="color:red;">{{ form.username.errors.0 }}</small>
+            {% endif %}
+
+            <!-- Password -->
+            <div class="input-group">
+                <i>🔒</i>
+                {{ form.password }}
+            </div>
+            {% if form.password.errors %}
+                <small style="color:red;">{{ form.password.errors.0 }}</small>
+            {% endif %}
+
+            <!-- NEXT redirect support -->
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+
+            <button type="submit" class="login-btn">
+                LOGIN
+            </button>
+
+            <!-- Non-field errors (invalid login) -->
+            {% if form.non_field_errors %}
+                <div style="color:red; margin-top:10px;">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+
+            {% comment %} <div class="forgot">
+                <a href="{% url 'password_reset' %}">
+                    Forgot Username / Password?
+                </a>
+            </div> {% endcomment %}
+        </form>
+
+
+        <div class="create-account">
+            WoodWrights Inc
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

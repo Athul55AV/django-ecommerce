@@ -1,0 +1,376 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+
+	{% block Home %}
+		<div class="text-danger text-center py-2" style="background-color: #b0e079ff;">
+			<div id="offerCarousel" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+				<div class="carousel-item active">🎁🎁🎁 Use <strong>WELCOME500</strong> to get ₹500 OFF! 🎁🎁🎁</div>
+				<div class="carousel-item">🔥🔥🔥 Flat ₹500 OFF on Tables — use code <strong>T500</strong>🔥🔥🔥</div>
+				<div class="carousel-item">🔥🔥🔥 Flat ₹1000 OFF on BEDS — use code <strong>B1000</strong>🔥🔥🔥</div>
+				</div>
+			</div>
+		</div>
+	<!-- Start Hero Section -->
+	<div class="hero">
+
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col-lg-5">
+					<div class="intro-excerpt">
+						<h2>Welcome{% if request.user.is_authenticated %}<img src="{% static 'userpanel/images/congrats.png' %}" style="width: 1em; height: 1em;">{{user.username}}<img src="{% static 'userpanel/images/congrats.png' %}" style="width: 1em; height: 1em;">{% endif %}</h2>
+						<p class="mb-4">Discover WoodWrights, India's premier furniture brand, renowned as the unrivaled
+							leader in the industry. With an unmatched range of products at unbeatable prices, we have
+							solidified our position as the number one choice for furniture enthusiasts across the
+							country.</p>
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="hero-img-wrap">
+						<img src="{% static 'userpanel/images/couch.png' %}" class="img-fluid">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Hero Section -->
+
+	<!-- Start Product Section -->
+	<div class="product-section">
+		<div class="container">
+			<div class="row">
+
+				<!-- Start Column 1 -->
+				<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+					<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
+					<p class="mb-4">Of elegance, craftsmanship, and enduring value
+						These are originals, made in Europe and built to last; products of great design,
+						spanning over a century of expertise and innovation. </p>
+					
+				</div>
+				<!-- End Column 1 -->
+
+				<!-- Start Column 2 -->
+				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+					<a class="product-item" href="{% url 'productdetail' 1 %}">
+						<img src="{% static 'userpanel/images/product_1.png' %}" class="img-fluid product-thumbnail">
+						<h3 class="product-title">Elegant Mahogany Armchair</h3>
+						<strong class="product-price">Rs.25000.0/-</strong>
+
+						<span class="icon-cross">
+							<img src="{% static 'userpanel/images/cross.svg' %}" class="img-fluid">
+						</span>
+					</a>
+				</div>
+				<!-- End Column 2 -->
+
+				<!-- Start Column 3 -->
+				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+					<a class="product-item" href="{% url 'productdetail' 2 %}">
+						<img src="{% static 'userpanel/images/product_2.png' %}" class="img-fluid product-thumbnail">
+						<h3 class="product-title">Modern Oak Dining Table</h3>
+						<strong class="product-price">Rs.35000.0/-</strong>
+
+						<span class="icon-cross">
+							<img src="{% static 'userpanel/images/cross.svg' %}" class="img-fluid">
+						</span>
+					</a>
+				</div>
+				<!-- End Column 3 -->
+
+				<!-- Start Column 4 -->
+				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+					<a class="product-item" href="{% url 'productdetail' 3 %}">
+						<img src="{% static 'userpanel/images/product_3.png' %}" class="img-fluid product-thumbnail">
+						<h3 class="product-title">Canopy King Bed</h3>
+						<strong class="product-price">Rs.45000.0/-</strong>
+
+						<span class="icon-cross">
+							<img src="{% static 'userpanel/images/cross.svg' %}" class="img-fluid">
+						</span>
+					</a>
+				</div>
+				<!-- End Column 4 -->
+
+			</div>
+		</div>
+	</div>
+	<!-- End Product Section -->
+
+	<!-- Start Why Choose Us Section -->
+	<div class="why-choose-section">
+		<div class="container">
+			<div class="row justify-content-between align-items-center">
+				<div class="col-lg-6">
+					<h2 class="section-title">Why Choose Us</h2>
+					<p>We are one of the ploneer retall organizations in the modern pre-manufactured furniture industry.
+						We believe good furniture makes a house feel like a home.As an investment, it also has to look great and last for years to come. Our vision is for affordable furniture made with a clear design sensibility and an emphasis on durable materials
+					</p>
+
+					<div class="row my-5">
+						<div class="col-6 col-md-6">
+							<div class="feature">
+								<div class="icon">
+									<img src="{% static 'userpanel/images/truck.svg' %}" alt="Image" class="imf-fluid">
+								</div>
+								<h3>Fast &amp; Free Shipping</h3>
+								<p>WoodWrights sells a furniture in every 2 minutes.</p>
+							</div>
+						</div>
+
+						<div class="col-6 col-md-6">
+							<div class="feature">
+								<div class="icon">
+									<img src="{% static 'userpanel/images/bag.svg' %}" alt="Image" class="imf-fluid">
+								</div>
+								<h3>10k+ Products</h3>
+								<p>More than 10,000 products to choose from.</p>
+							</div>
+						</div>
+
+						<div class="col-6 col-md-6">
+							<div class="feature">
+								<div class="icon">
+									<img src="{% static 'userpanel/images/support.svg' %}" alt="Image" class="imf-fluid">
+								</div>
+								<h3>International Style</h3>
+								<p>Our Collections include American, Italian, Turkish, European, Malaysian and Indian inmaterials and designs.</p>
+							</div>
+						</div>
+
+						<div class="col-6 col-md-6">
+							<div class="feature">
+								<div class="icon">
+									<img src="{% static 'userpanel/images/return.svg' %}" alt="Image" class="imf-fluid">
+								</div>
+								<h3>5.00 M+</h3>
+								<p>5.00 Million+ Happy customers</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-lg-5">
+					<div class="img-wrap">
+						<img src="{% static 'userpanel/images/why-choose-us-img.jpg' %}" alt="Image" class="img-fluid">
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- End Why Choose Us Section -->
+
+	<!-- Start We Help Section -->
+	<div class="we-help-section">
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col-lg-7 mb-5 mb-lg-0">
+					<div class="imgs-grid">
+						<div class="grid grid-1"><img src="{% static 'userpanel/images/img-grid-1.jpg' %}"
+								alt="Untree.co"></div>
+						<div class="grid grid-2"><img src="{% static 'userpanel/images/img-grid-2.jpg' %}"
+								alt="Untree.co"></div>
+						<div class="grid grid-3"><img src="{% static 'userpanel/images/img-grid-3.jpg' %}"
+								alt="Untree.co"></div>
+					</div>
+				</div>
+				<div class="col-lg-5 ps-lg-5">
+					<h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+					<p>Transform your living spaces with timeless elegance and modern comfort. At WoodWrights, we craft furniture that blends sleek design with practical functionality — creating homes that reflect your personal style.
+
+						Whether you're refreshing a room or furnishing a new home, our expertly curated collections offer:</p>
+
+					<ul class="list-unstyled custom-list my-4">
+						<li>Unique, handcrafted furniture made from sustainable materials</li>
+						<li>Thoughtfully designed pieces that maximize both space and style</li>
+						<li>Seamless integration of contemporary aesthetics and cozy living</li>
+						<li>Expert guidance and personalized design consultations</li>
+					</ul>
+					<!-- <p><a herf="#" class="btn">Explore</a></p> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="testimonial-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-7 mx-auto text-center">
+					<h2 class="section-title">Testimonials</h2>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-lg-12">
+					<div class="testimonial-slider-wrap text-center">
+
+						<div id="testimonial-nav">
+							<span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+							<span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+						</div>
+
+						<div class="testimonial-slider">
+
+							<div class="item">
+								<div class="row justify-content-center">
+									<div class="col-lg-8 mx-auto">
+
+										<div class="testimonial-block text-center">
+											<blockquote class="mb-5">
+												<p>&ldquo;I absolutely love the furniture I purchased from WoodWrights. The quality is outstanding, and it transformed my living room into a cozy, stylish space. The team was super helpful in guiding me through the design choices!&rdquo;</p>
+											</blockquote>
+
+											<div class="author-info">
+												<div class="author-pic">
+													<img src="{% static 'userpanel/images/Mohanlal.jpg' %}"
+														alt="Maria Jones" class="img-fluid">
+												</div>
+												<h3 class="font-weight-bold">Mohanlal</h3>
+												<span class="position d-block mb-3">Indian actor</span>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- END item -->
+
+							<div class="item">
+								<div class="row justify-content-center">
+									<div class="col-lg-8 mx-auto">
+
+										<div class="testimonial-block text-center">
+											<blockquote class="mb-5">
+												<p>&ldquo;From start to finish, the experience was seamless. The modern designs fit perfectly with my home’s aesthetic, and the craftsmanship is top-notch. Highly recommend for anyone wanting to elevate their interiors.&rdquo;</p>
+											</blockquote>
+
+											<div class="author-info">
+												<div class="author-pic">
+													<img src="{% static 'userpanel/images/Dhoni.jpg' %}"
+														alt="Maria Jones" class="img-fluid">
+												</div>
+												<h3 class="font-weight-bold">MS Dhoni</h3>
+												<span class="position d-block mb-3">Indian cricketer</span>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- END item -->
+
+							<div class="item">
+								<div class="row justify-content-center">
+									<div class="col-lg-8 mx-auto">
+
+										<div class="testimonial-block text-center">
+											<blockquote class="mb-5">
+												<p>&ldquo;I was impressed by how eco-friendly and sustainable their materials are. Plus, the furniture is not only beautiful but also incredibly comfortable. It’s made my home feel more inviting and personal.&rdquo;</p>
+											</blockquote>
+
+											<div class="author-info">
+												<div class="author-pic">
+													<img src="{% static 'userpanel/images/Shreya.jpg' %}"
+														alt="Maria Jones" class="img-fluid">
+												</div>
+												<h3 class="font-weight-bold">Shreya Ghoshal</h3>
+												<span class="position d-block mb-3">Indian singer</span>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- END item -->
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% endblock Home %}
+
+{% block subscription %}
+<div class="row">
+	<div class="col-lg-8">
+		<div class="subscription-form">
+			<h3 class="d-flex align-items-center"><span class="me-1"><img src="{% static 'userpanel/images/envelope-outline.svg' %}" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+
+			<form method="POST" id="subscribe-form" class="row g-3">
+				{% csrf_token %}
+				<div class="col-auto">
+					{{form.name}}
+				</div>
+				<div class="col-auto">
+					{{form.email}}
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-primary" type="submit">
+						<span class="fa fa-paper-plane"></span>
+					</button>
+				</div>
+			</form>
+
+			<div id="subscription-message"></div>
+
+
+		</div>
+	</div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+
+    $("#subscribe-form").submit(function (e) {
+        e.preventDefault(); // prevent reload
+
+        $.ajax({
+            url: "{% url 'index' %}",
+            type: "POST",
+            data: $(this).serialize(),
+            success: function (response) {
+
+                $("#subscription-message").html(""); // clear old messages
+
+                if (response.status === "success") {
+                    $("#subscription-message").html(`
+                        <div class="alert alert-success">${response.message}</div>
+                    `);
+
+                    // ⭐ Clear form fields
+                    $("#subscribe-form")[0].reset();
+                }
+                else if (response.status === "exists") {
+                    $("#subscription-message").html(`
+                        <div class="alert alert-info">${response.message}</div>
+                    `);
+                }
+                else {
+                    $("#subscription-message").html(`
+                        <div class="alert alert-warning">${response.message}</div>
+                    `);
+                }
+
+            }
+        });
+    });
+
+});
+
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+
+</script>
+
+
+{% endblock subscription %}

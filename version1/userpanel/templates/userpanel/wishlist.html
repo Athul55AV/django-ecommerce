@@ -1,0 +1,59 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+	{% block Home %}
+
+		<div class="untree_co-section before-footer-section">
+            <div class="container">
+              <div class="row mb-5">
+                <form class="col-md-12" method="post">
+                  <div class="site-blocks-table">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="product-thumbnail">Image</th>
+                          <th class="product-name">Product</th>
+                          <th class="product-price">Price</th>
+                          <th class="product-remove">Remove</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      
+                      <tbody>
+						{% for item in wishlist %}
+                        <tr>
+                          <td class="product-thumbnail">
+                            <img src="{{item.product.product_image.url}}" alt="Image" class="img-fluid">
+                          </td>
+                          <td class="product-name">
+                            <a href="{% url 'productdetail' item.product.id %}" class="text-decoration-none text-reset"><h2 class="h5 text-black">{{item.product.title}}</h2></a>
+                          </td>
+                          <td>{{item.product.price}}</td>
+                          <td><a href="#" class="remove-wishlist btn btn-black btn-sm" pid={{item.product.id}}>X</a></td>
+                          <td>
+                            {% if item.product.stock != "OutofStock" %}
+                              {% if item.product.id in incart %}
+                                Already In Cart
+                              {% else %}
+                                <a href="{% url 'add-to-cart' %}?prod_id={{ item.product.id }}"
+                                  class="btn btn-primary"
+                                  style="border: none; outline: none; padding: 1; background-color: #3b5d50">
+                                  Buy Now
+                                </a>
+                              {% endif %}
+                            {% else %}
+                                <a style="color: red; font-weight: bold; font-size: 15px;">Out of Stock</a>
+                            {% endif %}  
+                          </td>
+                        </tr>
+						{% endfor %}
+                      </tbody>
+                      
+                    </table>
+                  </div>
+                </form>
+              </div>
+			</div>
+		</div>	
+		{% endblock Home %}
+

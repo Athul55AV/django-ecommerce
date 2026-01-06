@@ -1,0 +1,187 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}            
+{% block Home %}    
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-Auto bg-light rounded mx-0">
+        <div class="text-center">
+            <div class="col-12">
+                <div class="bg-light rounded p-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Coupon Code</th>
+                                    <th>Discount_amount</th>
+                                    <th>is_active</th>
+                                    <th>Categories</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <button class="btn btn-outline-success mb-3 ms-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addCouponModal">
+                                    + Add Coupon
+                                </button>
+                                <div class="modal fade" id="addCouponModal" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="add_coupon">
+
+                                            <div class="modal-header">
+                                            <h5 class="modal-title">Add Coupon</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body row g-3">
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Coupon Code</label>
+                                                <input type="text"
+                                                    name="code"
+                                                    class="form-control"
+                                                    placeholder="eg:SAVE100"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Discount Amount (₹)</label>
+                                                <input type="number"
+                                                    name="discount_amount"
+                                                    class="form-control"
+                                                    min="1"
+                                                    required>
+                                            </div>
+                                            <div class="col-md-12 d-flex justify-content-center">
+                                                <div class="text-center">
+
+                                                    <label class="form-label d-block mb-2">
+                                                        Coupon Status
+                                                    </label>
+
+                                                    <div class="form-check form-switch d-inline-flex align-items-center justify-content-center p-0">
+                                                        <input class="form-check-input m-0"
+                                                            type="checkbox"
+                                                            id="couponActiveSwitch"
+                                                            name="is_active"
+                                                            checked>
+                                                        <label class="form-check-label ms-2 mb-0" for="couponActiveSwitch">
+                                                            Active
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label class="form-label">Applicable Categories</label>
+                                                <select name="categories"
+                                                        class="form-control"
+                                                        multiple>
+                                                {% for cat in categories %}
+                                                    <option value="{{ cat.id }}">{{ cat.category_choice }}</option>
+                                                {% endfor %}
+                                                </select>
+                                                <small class="text-muted">Hold Ctrl / Cmd to select multiple</small>
+                                            </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">
+                                                Save Coupon
+                                            </button>
+                                            </div>
+
+                                        </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                {% for co in codes %}
+                                <tr>
+                                    <td>{{co.code}}</td>
+                                    <td>{{co.discount_amount}}</td>
+                                    <td>
+                                        {% if co.is_active %}
+                                            Active
+                                        {% else %}
+                                            Expired
+                                        {% endif %} 
+                                    </td>
+                                    <td>
+                                        {% for cat in co.categories.all %}
+                                            {{ cat.category_choice }}{% if not forloop.last %}, {% endif %}
+                                        {% empty %}
+                                            +
+                                        {% endfor %}
+                                    </td>
+                                    <td><a href="{% url 'edit_code' co.id %}">Edit</a></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ co.id }}">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="deleteModal{{ co.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                Are you sure you want to delete  
+                                                <strong>{{ co.code }}</strong>?
+                                                <br>
+                                                <small class="text-muted">This action cannot be undone.</small>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    Cancel
+                                                </button>
+
+                                                <form action="{% url 'delete_code' co.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Yes, Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+</script>
+
+
+{% endblock Home %}

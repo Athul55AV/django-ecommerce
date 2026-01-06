@@ -1,0 +1,63 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}            
+{% block Home %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-100 bg-light rounded mx-0">
+        <div class="text-center">
+            <div class="col-12">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">Accounts</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users|slice:"1:" %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td><a href="{% url 'sorders_single' user.id %}">{{ user.username }}</a></td>
+                                    <td><a href="{% url 'address_view' user.id %}">View</a></td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% if user.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Blocked</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'edit_users' user.id %}">Edit</a> |
+                                        <a href="{% url 'reset_password' user.id %}">Reset Password</a>
+                                        {% comment %} <form action="{% url 'delete_users' user.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="submit" value="delete"/>
+                                        </form> {% endcomment %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+</script>
+
+
+{% endblock Home %}

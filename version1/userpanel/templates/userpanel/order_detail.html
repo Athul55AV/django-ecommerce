@@ -1,0 +1,83 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}            
+{% block Home %} 
+<div class="container mt-4">
+    <h2>Order #{{ order.payment.razorpay_order_id }}</h2>
+    <p><strong>User:</strong> {{ order.user}}</p>
+    <p><strong>Customer:</strong> {{order.name}}</p>
+    <p><strong>Address:</strong> {{order.locality}},{{order.city}},pin:{{order.zipcode}},{{order.state}} ,Phone:{{order.mobile}}</p>
+    <p><strong>Status:</strong> <span class="badge bg-warning">{{ order.status }}</span></p>
+    {% if order.status == 'Pending'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-info" style="width: 10%"></div>
+        </div>
+    {% endif %}                            
+    {% if order.status == 'Accepted'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-info" style="width: 25%"></div>
+        </div>
+    {% endif %}
+    {% if order.status == 'Packed'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-warning" style="width: 50%"></div>
+        </div>
+    {% endif %}
+    {% if order.status == 'On The Way'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-warning" style="width: 75%"></div>
+        </div>
+    {% endif %}
+    {% if order.status == 'Delivered'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-success" style="width: 100%"></div>
+        </div>
+    {% endif %}
+    {% if order.status == 'Cancel'%}
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-danger" style="width: 100%"></div>
+        </div>
+    {% endif %}
+    <p><strong>Payment:</strong> {% if order.payment.paid %} Paid{% else %} Not Paid{% endif %}</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ao in allorder %}
+                <tr>
+                    <td><img src="{{ao.product_image_url}}" alt="Image" class="img-fluid" style="width:80px; height:80px; object-fit:cover;"></td>
+                    <td>
+                        {% if ao.product %}
+                              <a href="{% url 'productdetail' ao.product.id %}" class="text-decoration-none text-reset">{{ao.product_title}}</a>
+                        {% else %}
+                              {{ao.product_title}}
+                        {% endif %}
+                        {% comment %} {{ ao.product_title }} {% endcomment %}
+                    </td>
+                    <td>{{ ao.quantity }}</td>
+                    <td>₹{{ ao.product_price }}</td>
+                    <td>₹{{ ao.total_cost }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h4 class="mt-3">Order Summary</h4>
+    <p><strong>Product Amount:</strong> ₹{{ torder }}</p>
+    <p><strong>Discount Amount:</strong> ₹{% if order.payment.discount_applied %} {{order.payment.discount_applied}} {% else %} 0 {% endif %}</p>
+    <p><strong>Tax Amount:</strong> ₹{{ order.payment.tax }}</p>
+    <p><strong>Total Amount:</strong> ₹{{ order.payment.amount }}</p>    
+</div>
+<script>
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+</script>
+{% endblock %}

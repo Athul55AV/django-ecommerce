@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'styles0.css' %}">
+</head>
+<body>
+    <div class="login">
+        <h1>Register</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit" style="color: rgb(249, 248, 248);background-color: blueviolet;">submit</button>
+        </form>
+        
+    </div>
+</body>
+</html>

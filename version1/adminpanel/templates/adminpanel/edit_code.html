@@ -1,0 +1,142 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}            
+{% block Home %}    
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-Auto bg-light rounded mx-0">
+        <div class="text-center">
+            <div class="col-12">
+                <div class="bg-light rounded p-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Coupon Code</th>
+                                    <th>Discount_amount</th>
+                                    <th>is_active</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                       Edit Coupon
+                                    </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="addproduct">
+                                                <form method="POST">
+                                                    {% csrf_token %}
+
+                                                    <div class="card p-4 shadow-sm">
+
+                                                        <h5 class="mb-3">Edit Coupon</h5>
+
+                                                        <div class="row g-3">
+
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Coupon Code</label>
+                                                                {{ form.code }}
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Discount Amount (₹)</label>
+                                                                {{ form.discount_amount }}
+                                                            </div>
+
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="text-center">
+
+                                                                    <label class="form-label d-block mb-2">
+                                                                        Coupon Status
+                                                                    </label>
+
+                                                                    <div class="form-check form-switch d-inline-flex align-items-center justify-content-center p-0">
+                                                                        <input class="form-check-input m-0"
+                                                                            type="checkbox"
+                                                                            id="couponActiveSwitch"
+                                                                            name="is_active"
+                                                                            {% if form.is_active.value %}checked{% endif %}>
+
+                                                                        <label class="form-check-label ms-2 mb-0"
+                                                                            for="couponActiveSwitch">
+                                                                            {% if form.is_active.value %}
+                                                                                Active
+                                                                            {% else %}
+                                                                                Expired
+                                                                            {% endif %}
+                                                                        </label>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <label class="form-label d-block text-center mb-2">
+                                                                    Applicable Categories
+                                                                </label>
+
+                                                                <div class="d-flex flex-wrap justify-content-center gap-2">
+                                                                    {% for checkbox in form.categories %}
+                                                                        <label class="btn btn-outline-primary btn-sm">
+                                                                            {{ checkbox.tag }}
+                                                                            {{ checkbox.choice_label }}
+                                                                        </label>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-end mt-4">
+                                                            <button type="submit" class="btn btn-success">
+                                                                Update Coupon
+                                                            </button>
+                                                            <a href="{% url 'scode' %}" class="btn btn-secondary ms-2">
+                                                                Cancel
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                {% for co in codes %}
+                                <tr>
+                                    <td>{{co.code}}</td>
+                                    <td>{{co.discount_amount}}</td>
+                                    <td>{{co.is_active}}</td>
+                                    <td><a href="{% url 'edit_code' co.id %}">Edit</a></td>
+                                    <td>
+                                        <form action="{% url 'delete_code' co.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="submit" value="delete"/>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+</script>
+
+
+{% endblock Home %}

@@ -1,0 +1,133 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block Home %}
+
+
+    <div class="profile-section">
+        <div class="container profile-container">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="profile-sidebar">
+                        <ul class="nav flex-column nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'userprofile' %}">
+                                    <i class="bi bi-person-circle me-2"></i>Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'address' %}">
+                                    <i class="bi bi-geo-alt me-2"></i>Address
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'passwordchange' %}">
+                                    <i class="bi bi-lock me-2"></i>Change Password
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Form -->
+                <div class="col-md-9">
+                    <div class="profile-form-container">
+                        <div class="form-header">
+                            <h3>Your Profile</h3>
+                            <p>Your personal information below</p>
+                        </div>
+
+                        <div class="row form-row-custom align-items-center">
+                            <label class="col-sm-3 col-form-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                    class="form-control"
+                                    value="{{ request.user.get_full_name|default:request.user.username }}"
+                                    disabled>
+                            </div>
+                        </div>
+
+                        <div class="row form-row-custom align-items-center">
+                            <label class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email"
+                                    class="form-control"
+                                    value="{{ request.user.email }}"
+                                    disabled>
+                            </div>
+                        </div>
+                        
+                        {% comment %} <form action="" method="POST" class="profile-form">
+                            {% csrf_token %}
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    {{ form.name }}
+                                </div>
+                            </div>
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">Locality</label>
+                                <div class="col-sm-9">
+                                    {{ form.locality }}
+                                </div>
+                            </div>
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">City</label>
+                                <div class="col-sm-9">
+                                    {{ form.city }}
+                                </div>
+                            </div>
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">Mobile</label>
+                                <div class="col-sm-9">
+                                    {{ form.mobile }}
+                                </div>
+                            </div>
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">State</label>
+                                <div class="col-sm-9">
+                                    {{ form.state }}
+                                </div>
+                            </div>
+
+                            <div class="row form-row-custom align-items-center">
+                                <label class="col-sm-3 col-form-label">Zipcode</label>
+                                <div class="col-sm-9">
+                                    {{ form.zipcode }}
+                                </div>
+                            </div>
+
+                            {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert-custom" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                        <span>{{ msg }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <div class="text-center">
+                                <button type="submit" class="btn-save-address">
+                                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </form> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to index page when user presses browser back button
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", function () {
+            window.location.href = "{% url 'index' %}";
+        });
+    </script>
+{% endblock Home %}

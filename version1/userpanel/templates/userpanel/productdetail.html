@@ -1,0 +1,306 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+		<title>WoodWrights{% block title %}|Home{% endblock title %}</title>
+
+        {% block Home %}
+            <!--================Single Product Area =================-->
+            <div class="product_image_area">
+                <div class="container">
+                    <div class="row s_product_inner">
+  
+                        <div id="carouselExampleIndicators" class="carousel slide carousel-dark col-lg-6" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner s_Product_carousel">
+                                <div class="carousel-item active single-prd-item">
+                                    <div class="zoom-box">
+                                        <img id="zoom-image" src="{{product.product_image.url}}" class="img-fluid zoom-img" alt="">
+                                    </div>
+                                </div>
+                                <div class="carousel-item single-prd-item">
+                                    <div class="zoom-box">
+                                        <img id="zoom-image" src="{{product.product_image.url}}" class="img-fluid zoom-img" alt="">
+                                    </div>
+                                </div>
+                                <div class="carousel-item single-prd-item">
+                                    <div class="zoom-box">
+                                        <img id="zoom-image" src="{{product.product_image.url}}" class="img-fluid zoom-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                            <div class="s_product_text">
+                                <h3>{{product.title}}</h3>
+                                <h2>Rs.{{product.price}}/-</h2>
+                                <ul class="list">
+                                    <li><a><span>Category : </span>{{product.category}}</a></li>
+                                    <li><a><span>Availibility : </span>{{product.stock}}</a></li>
+                                </ul>
+                                <p>{{product.description}}</p>
+  
+                                <div class="card_area d-flex align-items-center">
+                                    {% if product.stock != "OutofStock" %}
+                                        {% comment %} <a class="primary-btn text-decoration-none" href="{% url 'buynow' product.id %}">Buy Now</a> {% endcomment %}
+                                        <form action="/add-to-cart">
+                                            <input type="hidden" name="prod_id" value={{product.id}} />
+                                            {% if incart %}
+                                                <button type="submit" class="icon_btn1" style="border: none; outline: none; padding: 0;" disabled>
+                                                    <img src="{% static 'userpanel/images/cart.svg' %}">
+                                                </button>
+                                            {% else %}
+                                                <button type="submit" class="primary-btn" style="border: none; outline: none; padding: 1;">
+                                                    Buy Now
+                                                </button>
+                                            {% endif %}
+                                        </form>   
+                                    {% else %}
+                                        <a style="color: red; font-weight: bold; font-size: 24px;">Out of Stock.</a>
+                                    {% endif %}                                 
+                                    {% if wishlist %}                                 
+                                        <a pid={{product.id}} class="minus-wishlist icon_btn1"><i class="lnr lnr lnr-heart"><img src="{% static 'userpanel/images/wishlist.svg' %}"></i></a>
+                                    {% else %}
+                                        <a pid={{product.id}} class="plus-wishlist icon_btn"><i class="fas fa-lg"><img src="{% static 'userpanel/images/wishlist.svg' %}"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--================End Single Product Area =================-->
+            <!--================Product Description Area =================-->
+            <section class="product_description_area">
+                <div class="container">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                            aria-selected="false">Specification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="review-tab" data-bs-toggle="tab" href="#review" role="tab" aria-controls="review"
+                            aria-selected="false">Reviews</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <p>{{product.description}}</p>
+                            <p>Crafted with high-quality materials for durability and long-lasting use, this furniture piece combines timeless design with functionality, making it a versatile addition to any home. Elegant and practical, it provides comfort, convenience, and a polished look for everyday use. With attention to detail and modern aesthetics, it complements any interior while offering reliable performance and practical utility. Thoughtfully designed to balance beauty and usability, it is a sophisticated and durable solution suitable for all living spaces.</p>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <h5>Width</h5>
+                                            </td>
+                                            <td>
+                                                <h5>128mm</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h5>Height</h5>
+                                            </td>
+                                            <td>
+                                                <h5>508mm</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h5>Depth</h5>
+                                            </td>
+                                            <td>
+                                                <h5>85mm</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h5>Weight</h5>
+                                            </td>
+                                            <td>
+                                                <h5>52gm</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h5>Quality checking</h5>
+                                            </td>
+                                            <td>
+                                                <h5>yes</h5>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row total_rate">
+                                        <div class="col-6">
+                                            <div class="box_total">
+                                                <h5>Overall</h5>
+                                                <h4>{{overall_rating}}</h4>
+                                                <h6>({{total_reviews}} Reviews)</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="rating_list">
+                                                {% comment %} <h3>Based on 3 Reviews</h3>
+                                                <ul class="list">
+                                                    <li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                            class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
+                                                    <li><a href="#">4 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                            class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
+                                                    <li><a href="#">3 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                            class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
+                                                    <li><a href="#">2 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                            class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
+                                                    <li><a href="#">1 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                            class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
+                                                </ul> {% endcomment %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="review_list">
+                                        {% if reviews %}
+                                            {% for review in reviews %}
+                                                <div class="review_item">
+                                                    <div class="media">
+                                                        <div class="d-flex">
+                                                            <img src="img/product/review-1.png" alt="">
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <h4>{{ review.name }}</h4>
+                                                            {% if review.rating == 1 %}
+                                                                <i class="fa fa-star"></i>
+
+                                                            {% elif review.rating == 2 %}
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                            
+                                                            {% elif review.rating == 3 %}
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+
+                                                            {% elif review.rating == 4 %}
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+
+                                                            {% elif review.rating == 5 %}
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                            {% endif %}                                                                                                                        
+
+                                                        </div>
+                                                    </div>
+                                                    <p>{{ review.message }}</p>
+                                                </div>
+                                            {% endfor %}    
+                                        {% else %}
+                                            <p>No reviews yet. Be the first to review!</p>
+                                        {% endif %}    
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="review_box">
+                                        <h4>Add a Review</h4>
+                                        <p>Your Rating:</p>
+
+
+                                        <form method="POST" class="row contact_form" id="contactForm" novalidate="novalidate">
+                                            {% csrf_token %}
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {% comment %} <input type="text" class="form-control" id="name" name="name" placeholder="Your Full name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Full name'"> {% endcomment %}
+                                                    {{ form.name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {% comment %} <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'"> {% endcomment %}
+                                                    {{ form.email }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {% comment %} <input type="text" class="form-control" id="number" name="number" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'"> {% endcomment %}
+                                                    {{ form.number }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {% comment %} <textarea class="form-control" name="message" id="message" rows="1" placeholder="Review" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Review'"></textarea></textarea> {% endcomment %}
+                                                    {{ form.message }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                {% comment %} <ul class="list">
+                                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                                </ul> {% endcomment %}
+                                                {{ form.rating }}
+                                            </div>    
+                                            <div class="col-md-12 text-right">
+                                                <button type="submit" value="submit" class="primary-btn">Submit Now</button>
+                                            </div>
+                                        </form>
+                                        {% if submitted  %}
+                                            <div class="alert alert-success mt-3">
+                                                Your message has been sent successfully!
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+<script>
+    document.querySelectorAll('.zoom-img').forEach(img => {
+        const zoomBox = img.parentElement;
+
+        zoomBox.addEventListener("mousemove", function(e) {
+            let rect = zoomBox.getBoundingClientRect();
+            
+            let x = ((e.clientX - rect.left) / rect.width) * 100;
+            let y = ((e.clientY - rect.top) / rect.height) * 100;
+
+            img.style.transform = "scale(2)";
+            img.style.transformOrigin = `${x}% ${y}%`;
+        });
+
+        zoomBox.addEventListener("mouseleave", function() {
+            img.style.transform = "scale(1)";
+        });
+    });   
+</script>      
+            
+        {% endblock Home %}

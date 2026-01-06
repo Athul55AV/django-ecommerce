@@ -1,0 +1,324 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+
+	{% block Home %}
+
+
+		<form method="POST" id="myform">
+			{% csrf_token %}
+			<div class="untree_co-section">
+				<div class="container">
+
+				<div class="row">
+					<div class="col-md-6 mb-5 mb-md-0">
+						<div class="row mb-5">
+							<div class="col-md-12">
+								<h2 class="h3 mb-3 text-black">Coupon Code</h2>
+								<div class="p-3 p-lg-5 border bg-white">
+
+									<label for="c_code" class="text-black mb-3">Enter your coupon code</label>
+									<div class="input-group w-75 couponcode-wrap">
+										<input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+										<div class="input-group-append">
+											<button class="primary-btn" type="button" id="button-addon2">Apply</button>
+										</div>
+									</div>
+									<div class="d-flex align-items-center mt-3">
+										<div id="coupon-message" class="mt-3"></div>
+										<button id="remove-coupon-btn" type="button" class="" style="display:none; color: red; background-color: white; border: 1px solid red;">Remove</button>
+									</div>	
+									<p class="d-inline-flex gap-1">
+										<a class="text-decoration-none text-reset" style="" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+											<p class="mb-2"><strong>WELCOME500</strong> – Get ₹500 OFF on first order <span class="text-success">See more</span></p>
+										</a>
+									</p>
+									<div class="collapse" id="collapseExample">
+										<div class="card card-body border-0">
+											
+											<p class="mb-2"><strong>T500</strong> – Flat ₹500 OFF on Tables</p>
+											<p class="mb-2"><strong>B1000</strong> – Flat ₹1000 OFF on Beds</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>						
+						<h2 class="h3 mb-3 text-black">Billing Details</h2>
+						<div class="p-3 p-lg-5 border-0 bg-white">
+							{% for ad in add %}
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="custid" id="custadd{{forloop.counter}}" value="{{ad.id}}" required>
+									<label class="form-check-label fw-bold w-100" for="custadd{{forloop.counter}}">
+										<div class="p-3 mb-3" style="border: 1px solid #d0f0e0;">
+											<h3 class="h6 mb-0"><a class="d-block text-decoration-none text-reset" data-bs-toggle="collapse" href="#collapse{{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">{{ad.name}}</a></h3>
+											<div class="collapse" id="collapse{{ forloop.counter }}">
+												<div class="py-2">
+													<div class="card border-0" style="background-color: #d0f0e0;">
+														<div class="card-body">
+															<p>Mobile : {{ad.mobile}}</p>
+															<p>{{ad.locality}}, {{ad.city}}, {{ad.state}} - {{ad.zipcode}}</p>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</label>
+								</div>
+							{% endfor %}
+
+
+							<div class="form-group">
+							{% comment %} <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address"> Ship To A Different Address?</label> {% endcomment %}
+							<a class="nav-link" href="{% url 'profile' %}">🚚 Ship To A Different Address? <span class="text-success">Add Address</span></a>
+							</div>
+
+						</div>
+
+					</div>
+					
+					<div class="col-md-6">
+
+						<div class="row mb-5">
+							<div class="col-md-12">
+							<h2 class="h3 mb-3 text-black">Your Order</h2>
+							<div class="p-3 p-lg-5 border bg-white">
+								<table class="table site-block-order-table mb-5">
+								<thead>
+									<th>Product</th>
+									<th>Total</th>
+								</thead>
+								<tbody>
+									{% for item in cart_items %}
+									<tr>
+									<td>{{item.product.title}}<strong class="mx-2">x</strong>{{item.quantity}}</td>
+									<td>{{item.product.price}}</td>
+									</tr>
+									{% endfor %}
+
+
+									<tr>
+									<td class="text-black font-weight-bold"><strong>Cart Total</strong></td>
+									<td class="text-black font-weight-bold" id="cart_total_value"><strong>{{famount}}</strong></td>
+									</tr>								
+									<tr>
+									<td class="text-black font-weight-bold"><strong>Discount</strong></td>
+									<td class="text-black font-weight-bold" id="discount"><strong>{{discount}}</strong></td>
+									</tr>
+									<tr>
+									<td class="text-black font-weight-bold"><strong>Tax(18%)</strong></td>
+									<td class="text-black font-weight-bold" id="tax"><strong>{{tax}}</strong></td>
+									</tr>
+									<tr>
+									<td class="text-black font-weight-bold"><strong>Total Payable</strong></td>
+									<td class="text-black font-weight-bold" id="order_total"><strong>{{order_total}}</strong></td>
+									</tr>																									
+								</tbody>
+								</table>
+								<!-- Payment Options -->
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="payment_method" id="cod" value="COD">
+									<label class="form-check-label" for="cod">Cash on Delivery</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="payment_method" id="online" value="Online" checked>
+									<label class="form-check-label" for="online">Online Payment</label>
+								</div>
+
+								<!-- Buttons -->
+								<div class="form-group">
+									<button id="cod-button" type="button" class="primary-btn" style="display:none;">Place Order (Cash)</button>
+									{% comment %} <button id="rzp-button1" type="submit" class="primary-btn">Pay Online</button> {% endcomment %}
+								
+									<input type="hidden" name="productid" value="{{ product.id }}">
+									<button id ="rzp-button1" type="submit" class="primary-btn">Pay Online</button>
+								</div>
+							</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- </form> -->
+				</div>
+			</div>
+		</form>
+
+
+		<script>
+			const productId = {{ product.id }};
+			document.getElementById('button-addon2').addEventListener('click', function() {
+				var couponCode = document.getElementById('c_code').value.trim(); // Get the code
+				const messageDiv = document.getElementById("coupon-message");
+				messageDiv.innerHTML = "";
+				if (!couponCode) {
+					//alert("Please enter a coupon code.");
+					messageDiv.innerHTML = `<p class="text-danger">Please enter a coupon code.</p>`;
+					return;
+				}
+				console.log("Coupon entered:", couponCode);
+				fetch(`/applycoupon?code=${couponCode}&type=single&prod_id=${productId}`)
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+
+							document.querySelector("#discount strong").innerText = data.discount;
+							document.querySelector("#tax strong").innerText = data.tax;
+							document.querySelector("#order_total strong").innerText = data.order_total;
+
+							//alert(`Coupon applied! Discount: ₹${data.discount}`);
+							messageDiv.innerHTML = `<p class="text-success">Coupon applied! Discount: ₹${data.discount}</p>`;
+							document.getElementById('remove-coupon-btn').style.display = 'inline-block';
+							//location.reload();
+							window.currentOrderId = data.order_id;
+                			window.currentRazorAmount = data.razoramount;
+						} else {
+							//alert(data.message);
+							messageDiv.innerHTML = `<p class="text-danger">${data.message || 'Invalid coupon code.'}</p>`;
+						}
+					})
+					.catch(error => {
+						console.error("Error applying coupon:", error);
+						//alert("Something went wrong. Try again.");
+						messageDiv.innerHTML = `<p class="text-danger">Something went wrong. Try again.</p>`;
+					});
+			});					
+			
+
+
+			document.getElementById('rzp-button1').onclick = function(e) {
+				console.log("button click");
+				
+
+				const form = document.getElementById("myform");
+				const selectedAddress = form.querySelector('input[name="custid"]:checked');
+				if (!selectedAddress) {
+					//alert("Please select an address before proceeding.");
+					return;
+				}
+				const currentAmount = window.currentRazorAmount || {{ razoramount }};
+    			const currentOrderId = window.currentOrderId || "{{ order_id }}";
+
+				const options = {
+					"key": "rzp_test_RJkquAQeZqplnc",
+					"amount": currentAmount,
+					"currency": "INR",
+					"name": "WoodWrights",
+					"description": "Purchase Product",
+					"order_id": currentOrderId,
+					"handler": function (response) {
+						window.location.href = `/paymentdone?order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}&cust_id=${form.elements["custid"].value}&product_id=${form.elements["productid"].value}`;
+					},
+					"theme": { "color": "#3399cc" }
+				};
+				const rzp1 = new Razorpay(options);
+
+				// ✅ Now open Razorpay Checkout
+				rzp1.open();
+				e.preventDefault();
+			};
+
+
+			document.getElementById('remove-coupon-btn').addEventListener('click', function() {
+				const productPrice = {{ product.price }};
+				const messageDiv = document.getElementById("coupon-message");
+				messageDiv.innerHTML = "";
+
+				fetch(`/remove_coupon?type=single`)
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							// Reset totals
+							document.querySelector("#discount strong").innerText = 0;
+							const tax = Math.round(productPrice * 0.18);
+							document.querySelector("#tax strong").innerText = tax;
+							const orderTotal = productPrice + tax;
+							document.querySelector("#order_total strong").innerText = orderTotal;
+
+							messageDiv.innerHTML = `<p class="text-success">Coupon removed.</p>`;
+							document.getElementById('remove-coupon-btn').style.display = 'none';
+						} else {
+							messageDiv.innerHTML = `<p class="text-danger">${data.message || 'Failed to remove coupon.'}</p>`;
+						}
+					})
+					.catch(error => {
+						console.error("Error removing coupon:", error);
+						messageDiv.innerHTML = `<p class="text-danger">Something went wrong. Try again.</p>`;
+					});
+			});
+			document.addEventListener('DOMContentLoaded', function() {
+				const codRadio = document.getElementById('cod');
+				const onlineRadio = document.getElementById('online');
+				const codButton = document.getElementById('cod-button');
+				const onlineButton = document.getElementById('rzp-button1');
+
+				function toggleButtons() {
+					if (codRadio.checked) {
+						codButton.style.display = 'inline-block';
+						onlineButton.style.display = 'none';
+					} else {
+						codButton.style.display = 'none';
+						onlineButton.style.display = 'inline-block';
+					}
+				}
+
+				toggleButtons();
+
+				
+				codRadio.addEventListener('change', toggleButtons);
+				onlineRadio.addEventListener('change', toggleButtons);
+			});
+			document.getElementById('cod-button').addEventListener('click', function(e) {
+				e.preventDefault();
+				console.log("COD button clicked");
+
+				const form = document.getElementById("myform");
+				const selectedAddress = form.querySelector('input[name="custid"]:checked');
+
+				if (!selectedAddress) {
+					alert("Please select an address before placing the order.");
+					return;
+				}
+
+				const custId = form.elements["custid"].value;
+				const productId = form.elements["productid"] ? form.elements["productid"].value : "";
+
+				fetch(`/cod_order/?cust_id=${custId}&product_id=${productId}`, {
+					method: "GET",
+					headers: { "X-Requested-With": "XMLHttpRequest" }
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						//alert(`Order placed successfully! Pay ₹${data.amount} on delivery.`);
+						window.location.href = "/cod_success";
+					} else {
+						alert(data.message || "Failed to place COD order.");
+					}
+				})
+				.catch(error => {
+					console.error("Error placing COD order:", error);
+					alert("Something went wrong. Try again.");
+				});
+			});
+
+			document.getElementById("wallet-button").addEventListener("click", function () {
+				const form = document.getElementById("myform");
+				const custId = form.elements["custid"].value;
+				const productId = form.elements["productid"] ? form.elements["productid"].value : "";
+
+				fetch(`/wallet_payment?cust_id=${custId}&product_id=${productId}`)
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							window.location.href = data.redirect_url;
+						} else {
+							alert(data.message || "Wallet payment failed.");
+						}
+					})
+					.catch(() => {
+						alert("Error processing wallet payment.");
+					});
+			});
+		</script>
+		{% endblock Home %}
+

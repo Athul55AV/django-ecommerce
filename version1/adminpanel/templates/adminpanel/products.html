@@ -1,0 +1,436 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}            
+{% block Home %}    
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-Auto bg-light rounded mx-0">
+        <div class="text-center">
+            <div class="col-12">
+                <div class="bg-light rounded p-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <button class="btn btn-success mb-3"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addProductModal">
+                                    + Add Product
+                                </button>
+                                <div class="modal fade" id="addProductModal" tabindex="-1">
+                                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                        <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Add New Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <!-- 🔥 YOUR EXISTING FORM – UNCHANGED -->
+                                            <form method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                            {% if form.non_field_errors %}
+                                                <div class="alert alert-danger">
+                                                {{ form.non_field_errors }}
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="row g-4">
+
+                                                <!-- LEFT COLUMN -->
+                                                <div class="col-lg-7">
+
+                                                <div class="card p-4 shadow-sm mb-4">
+                                                    <h6 class="fw-semibold mb-3">Name and Description</h6>
+
+                                                    <label class="form-label">Product Name</label>
+                                                    {{ form.title }}
+                                                    {% if form.title.errors %}
+                                                    <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                                                    {% endif %}
+
+                                                    <label class="form-label mt-3">Product Description</label>
+                                                    {{ form.description }}
+                                                </div>
+
+                                                <div class="card p-4 shadow-sm mb-4">
+                                                    <h6 class="fw-semibold mb-3">Category</h6>
+                                                    {{ form.category }}
+                                                </div>
+
+                                                <div class="card p-4 shadow-sm">
+                                                    <h6 class="fw-semibold mb-3">Manage Stock</h6>
+
+                                                    <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        {{ form.stock }}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        {{ form.stock_value }}
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <!-- RIGHT COLUMN -->
+                                                <div class="col-lg-5">
+
+                                                <div class="card p-4 shadow-sm mb-4">
+                                                    <h6 class="fw-semibold mb-3">Pricing</h6>
+                                                    {{ form.price }}
+                                                </div>
+
+                                                <div class="card p-4 shadow-sm mb-4">
+                                                    <h6 class="fw-semibold mb-3">Product Status</h6>
+
+                                                    <select name="status" class="form-control">
+                                                    {% for value, label in form.status.field.choices %}
+                                                        <option value="{{ value }}"
+                                                        {% if form.status.value == value %}selected{% endif %}>
+                                                        {% if value == 'Active' %}🟢 Active{% else %}🔴 Blocked{% endif %}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="card p-4 shadow-sm">
+                                                    <h6 class="fw-semibold mb-3">Product Image</h6>
+
+                                                    <input type="file"
+                                                        name="product_image"
+                                                        class="form-control"
+                                                        accept="image/*">
+
+                                                    <input type="hidden"
+                                                        name="cropped_image_data"
+                                                        id="cropped_image_data">
+
+                                                    <div class="mt-3 text-center">
+                                                    <img id="cropper-preview" style="max-width:100%; display:none;">
+                                                    <button type="button"
+                                                            id="crop-save-btn"
+                                                            class="btn btn-sm btn-primary mt-2"
+                                                            style="display:none;">
+                                                        Crop & Use Image
+                                                    </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-end mt-4">
+                                                    <button class="btn btn-success px-4">
+                                                    Add Product
+                                                    </button>
+                                                </div>
+
+                                                </div>
+                                            </div>
+                                            </form>
+
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                {% comment %} <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Add New Product +
+                                    </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="addproduct">
+
+                                                <form method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+
+                                                    {% if form.non_field_errors %}
+                                                        <div class="alert alert-danger">
+                                                            {{ form.non_field_errors }}
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <div class="row g-4">
+
+                                                        <!-- LEFT COLUMN -->
+                                                        <div class="col-lg-7">
+
+                                                            <div class="card p-4 shadow-sm mb-4">
+                                                                <h6 class="fw-semibold mb-3">Name and Description</h6>
+
+                                                                <label class="form-label">Product Name</label>
+                                                                {{ form.title }}
+                                                                {% if form.title.errors %}
+                                                                    <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                                                                {% endif %}
+
+                                                                <label class="form-label mt-3">Product Description</label>
+                                                                {{ form.description }}
+                                                            </div>
+
+                                                            <div class="card p-4 shadow-sm mb-4">
+                                                                <h6 class="fw-semibold mb-3">Category</h6>
+                                                                {{ form.category }}
+                                                            </div>
+
+                                                            <div class="card p-4 shadow-sm">
+                                                                <h6 class="fw-semibold mb-3">Manage Stock</h6>
+
+                                                                <div class="row g-3">
+                                                                    <div class="col-md-6">
+                                                                        {{ form.stock }}
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        {{ form.stock_value }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- RIGHT COLUMN -->
+                                                        <div class="col-lg-5">
+
+                                                            <div class="card p-4 shadow-sm mb-4">
+                                                                <h6 class="fw-semibold mb-3">Pricing</h6>
+                                                                {{ form.price }}
+                                                            </div>
+
+                                                            <div class="card p-4 shadow-sm mb-4">
+                                                                <h6 class="fw-semibold mb-3">Product Status</h6>
+
+                                                                <select name="status" class="form-control">
+                                                                    {% for value, label in form.status.field.choices %}
+                                                                        <option value="{{ value }}"
+                                                                            {% if form.status.value == value %}selected{% endif %}>
+                                                                            {% if value == 'Active' %}🟢 Active{% else %}🔴 Blocked{% endif %}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+                                                            <!-- IMAGE UPLOAD -->
+                                                            <div class="card p-4 shadow-sm">
+                                                                <h6 class="fw-semibold mb-3">Product Image</h6>
+
+                                                                <input type="file"
+                                                                    name="product_image"
+                                                                    class="form-control"
+                                                                    accept="image/*">
+
+                                                                <input type="hidden" name="cropped_image_data" id="cropped_image_data">
+
+                                                                <div class="mt-3 text-center">
+                                                                    <img id="cropper-preview" style="max-width:100%; display:none;">
+                                                                    <button type="button"
+                                                                            id="crop-save-btn"
+                                                                            class="btn btn-sm btn-primary mt-2"
+                                                                            style="display:none;">
+                                                                        Crop & Use Image
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-flex justify-content-end mt-4">
+                                                                <button class="btn btn-success px-4">
+                                                                    Add Product
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                    <form method="GET" class="d-flex" style="gap: 10px;">
+                                        <input type="text" name="search" class="form-control" placeholder="Search products"
+                                            value="{{ request.GET.search }}">
+
+                                        <select name="category" class="form-select">
+                                        <option value="">All Categories</option>
+                                        {% for cat in categories %}
+                                        <option value="{{cat.category_choice}}" {% if request.GET.category == "{{cat.category_choice}}" %}selected{% endif %}>{{cat.category_choice}}</option>
+                                        {% endfor %}
+                                        </select>
+
+                                        <select name="stock" class="form-select">
+                                        <option value="">All</option>
+                                        <option value="InStock" {% if request.GET.stock == "InStock" %}selected{% endif %}>InStock</option>
+                                        <option value="OutofStock" {% if request.GET.stock == "OutofStock" %}selected{% endif %}>OutofStock</option>
+                                        </select>                                        
+
+
+                                        <select name="sort" class="form-select">
+                                        <option value="">Sort by</option>
+                                        <option value="price" {% if request.GET.sort == "price" %}selected{% endif %}>Price: Low to High</option>
+                                        <option value="-price" {% if request.GET.sort == "-price" %}selected{% endif %}>Price: High to Low</option>
+                                        <option value="title" {% if request.GET.sort == "title" %}selected{% endif %}>Name(A–Z)</option>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                    </form>
+                                </div>
+
+                                {% for product in products %}
+                                <tr>
+                                    <td><img src="{{product.product_image.url}}" alt="Image" class="img-fluid"><a href="{% url 'single_review' product.id %}">Reviews</a></td>
+                                    <td>{{product.title}}</td>
+                                    <td>{{product.price}}</td>
+                                    <td>{{product.description}}</td>
+                                    <td>{{product.category}}</td>
+                                    <td>{{product.stock_value}}</td>
+                                    <td>
+                                        <a href="{% url 'edit_products' product.id %}">Edit</a> |
+
+                                        <button class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ product.id }}">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                Are you sure you want to delete  
+                                                <strong>{{ product.title }}</strong>?
+                                                <br>
+                                                <small class="text-muted">This action cannot be undone.</small>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    Cancel
+                                                </button>
+
+                                                <form action="{% url 'delete_products' product.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Yes, Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let cropper;
+
+        // Django will render the file input for product_image.
+        // We select it by name to avoid id differences.
+        const fileInput   = document.querySelector('input[name="product_image"]');
+        const imgPreview  = document.getElementById("cropper-preview");
+        const cropBtn     = document.getElementById("crop-save-btn");
+        const hiddenInput = document.getElementById("cropped_image_data");
+        const helpText = document.getElementById("product-image-help");
+
+        if (!fileInput) return;
+
+        fileInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (helpText) {
+                helpText.style.display = "none";
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                imgPreview.src = event.target.result;
+                imgPreview.style.display = "block";
+
+                // Destroy old cropper if exists
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(imgPreview, {
+                    aspectRatio: 1,      // Change if you want a different aspect ratio
+                    viewMode: 1,
+                    movable: true,
+                    zoomable: true,
+                    rotatable: false,
+                    scalable: false,
+                });
+
+                cropBtn.style.display = "inline-block";
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        cropBtn.addEventListener("click", function () {
+            if (!cropper) return;
+
+            const canvas = cropper.getCroppedCanvas({
+                width: 800,   // output width
+                height: 800,  // output height
+            });
+
+            const base64data = canvas.toDataURL("image/png");
+
+            hiddenInput.value = base64data;
+            imgPreview.src = base64data;
+
+            //alert("Cropped image set. Now click Save to update the product.");
+            cropBtn.innerText = "✔ Image Saved";
+            cropBtn.classList.remove("btn-primary");
+            cropBtn.classList.add("btn-success");
+            cropBtn.disabled = true;
+
+            /* Optional cleanup */
+            cropper.destroy();
+            cropper = null;
+        });
+    });
+
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'sindex' %}";
+    });
+      
+</script>
+
+
+{% endblock Home %}
+

@@ -1,0 +1,22 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block title %}|Addtocart{% endblock title %}
+{% block Home %}
+<div class="container text-center mt-5">
+    <div class="card shadow p-5 text-center">
+
+        <img src="{% static 'userpanel/images/congrats.png' %}" class="img-fluid w-50 mx-auto d-block mb-4">
+        <h2 class="text-success mb-3">🎉 Order Placed Successfully!</h2>
+        <p>Your Cash on Delivery order has been placed. You will pay the amount at delivery.</p>
+        
+        <a href="/orders" class="btn btn-primary mt-3 d-inline-block mx-auto">Go to Orders</a>
+    </div>
+</div>
+<script>
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+</script>
+{% endblock %}

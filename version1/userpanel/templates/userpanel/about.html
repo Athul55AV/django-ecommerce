@@ -1,0 +1,147 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+{% block title %}|Home{% endblock title %}
+
+{% block Home %}
+
+	<!-- Start Hero Section -->
+	<div class="hero">
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col-lg-5">
+					<div class="intro-excerpt">
+						<h1>Welcome</h1>
+						<p class="mb-4">Discover WoodWrights, India's premier furniture brand, renowned as the unrivaled
+							leader in the industry. With an unmatched range of products at unbeatable prices, we have
+							solidified our position as the number one choice for furniture enthusiasts across the
+							country.</p>
+					
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="hero-img-wrap">
+						<img src="{% static 'userpanel/images/couch.png' %}" class="img-fluid">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Hero Section -->
+
+		
+
+		<!-- Start Why Choose Us Section -->
+		<div class="why-choose-section">
+			<div class="container">
+				<div class="row justify-content-between align-items-center">
+					<div class="col-lg-6">
+						<h2 class="section-title">Why Choose Us</h2>
+						<p>We are one of the ploneer retall organizations in the modern pre-manufactured furniture industry.
+							We believe good furniture makes a house feel like a home.As an investment, it also has to look great and last for years to come. Our vision is for affordable furniture made with a clear design sensibility and an emphasis on durable materials
+						</p>
+
+						<div class="row my-5">
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'userpanel/images/truck.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>Fast &amp; Free Shipping</h3>
+									<p>WoodWrights sells a furniture in every 2 minutes.</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'userpanel/images/bag.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>10k+ Products</h3>
+									<p>More than 10,000 products to choose from.</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'userpanel/images/support.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>International Style</h3>
+									<p>Our Collections include American, Italian, Turkish, European, Malaysian and Indian inmaterials and designs.</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'userpanel/images/return.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>5.00 M+</h3>
+									<p>5.00 Million+ Happy customers</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-lg-5">
+						<div class="img-wrap">
+							<img src="{% static 'userpanel/images/why-choose-us-img.jpg' %}" alt="Image" class="img-fluid">
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- End Why Choose Us Section -->
+
+		<!-- Start Team Section -->
+		<div class="untree_co-section">
+			<div class="container">
+
+				<div class="row mb-5">
+					<div class="col-lg-5 mx-auto text-center">
+						<h2 class="section-title">Our Team</h2>
+					</div>
+				</div>
+
+				<div class="row justify-content-center">
+
+
+					<!-- Start Column 2 -->
+					<div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
+						<img src="{% static 'userpanel/images/person_1.jpg' %}" class="img-fluid mb-5">
+
+						<h3 clas><a href="https://www.linkedin.com/"><span class="">Athul</span></a></h3>
+						<span class="d-block position mb-4">Co Founder, WoodWrights.</span>
+						<p>A passionate changemaker transforming India’s furniture landscape, inspired by the desire for better quality.</p>
+						<!-- <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p> -->
+
+					</div> 
+					<!-- End Column 2 -->
+
+
+					
+
+				</div>
+			</div>
+		</div>
+		<!-- End Team Section -->
+
+<script>
+    // Redirect to index page when user presses browser back button
+    history.pushState(null, null, location.href);
+    window.addEventListener("popstate", function () {
+        window.location.href = "{% url 'index' %}";
+    });
+</script>		
+
+
+
+		
+
+
+{% endblock Home %}
+
+
