@@ -1,0 +1,1 @@
+Django Ecommerce Site [ This is an educational project] DISCLAIMER: THIS PAGE WAS MADE AS A PERSONAL EDUCATIONAL PROJECT. This is NOT the official site of any company or brand identified on the page. The creator of this page is NOT affiliated with any company or brand in any way. This page is a personal project made in connection with an educational exercise.
