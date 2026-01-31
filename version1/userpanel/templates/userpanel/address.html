@@ -123,6 +123,17 @@
                                         <i class="bi bi-geo-alt"></i>
                                         <h4>No Addresses Found</h4>
                                         <p>You haven't added any delivery addresses yet.</p>
+                                        <div class="add-address-body d-flex flex-column justify-content-center align-items-center h-100">
+                                            
+                                            <a href="{% url 'profile' %}" class="btn-plus">
+                                                <i class="bi bi-plus-lg"></i>
+                                            </a>
+
+                                            <p class="text-muted mt-3 mb-0">
+                                                Add a new delivery address
+                                            </p>
+
+                                        </div>
                                     </div>
                                 </div>
                             {% endif %}

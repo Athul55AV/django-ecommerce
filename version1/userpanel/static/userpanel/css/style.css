@@ -1912,7 +1912,7 @@ textarea {
     color: #999;
 }
 
-.empty-state i {
+.empty-state .bi-geo-alt {
     font-size: 80px;
     margin-bottom: 20px;
     color: #d0e8df;
