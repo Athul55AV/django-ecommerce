@@ -2,7 +2,7 @@ from django.urls import path
 from adminpanel.views import *
 
 urlpatterns = [
-    path('index/',index,name='sindex'),
+    path('',index,name='sindex'),
     path('base/',base,name='sbase'),
     path('registration/',registration,name='sregistration'),
     path('login/',login_view,name='slogin_view'),
