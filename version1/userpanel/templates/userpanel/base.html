@@ -60,11 +60,11 @@
 					</form>
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li>
-                            <div class="btn-group dropend">
+                            <div class="btn-group dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="{% static 'userpanel/images/user.svg' %}">
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
 									{% if request.user.is_authenticated %}
 									<li class="dropdown-item d-flex justify-content-between align-items-center">Hi {{ user.username }}</li>
                                     {% comment %} <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="{% url 'login_view' %}" >Login<img src="{% static 'userpanel/images/login.svg' %}"></a></li> {% endcomment %}
